@@ -69,20 +69,35 @@ def login():
         return redirect('/')
 
 @app.route('/cadastrarUsuario', methods=['POST'])
+
 def cadastrarUsuario():
-    global logado
     nome = request.form.get('nome')
+    email = request.form.get('email')
     senha = request.form.get('senha')
+    telefone = request.form.get('telefone')
+    data_nascimento = request.form.get('data_nascimento')
+    genero = request.form.get('genero')
+    endereco_rua = request.form.get('endereco_rua')
+    endereco_rua2 = request.form.get('endereco_rua2')
+    pais = request.form.get('pais')
+    cidade = request.form.get('cidade')
+    regiao = request.form.get('regiao')
+    cep = request.form.get('cep')
+
     conect_BD = psycopg2.connect(host='localhost', database='usuarios',user='postgres', password='191069')
 
     if conect_BD is not None:
         cursur = conect_BD.cursor()
-        cursur.execute(f"insert into usuario values (default, '{nome}', '{senha}');")
+        cursur.execute(f"""
+            INSERT INTO usuario 
+            (nome, email, senha, telefone, data_nascimento, genero, endereco_rua, endereco_rua2, pais, cidade, regiao, cep) 
+            VALUES 
+            ('{nome}', '{email}', '{senha}', '{telefone}', '{data_nascimento}', '{genero}', '{endereco_rua}', '{endereco_rua2}', '{pais}', '{cidade}', '{regiao}', '{cep}');
+        """)
         conect_BD.commit()
         cursur.close()
         conect_BD.close()
 
-    logado = True
     flash(F'{nome} CADASTRADO!!')
     return redirect('/adm')
 
@@ -125,6 +140,7 @@ def download():
     nomeArquivo = request.form.get('arquivosParaDownload')
 
     return send_from_directory('arquivos', nomeArquivo, as_attachment=True)
+
 
 
 

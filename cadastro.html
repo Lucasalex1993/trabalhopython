@@ -12,25 +12,30 @@
 
     <section class="container">
       <header>Formulário de registro</header>
-      <form action="#" class="form">
+      <form action="/cadastrarUsuario" method="POST" class="form">
         <div class="input-box">
           <label>Nome completo</label>
-          <input type="text" placeholder="Nome completo" required />
+          <input type="text" name="nome" placeholder="Nome completo" required />
         </div>
-
+        <div class="column">
         <div class="input-box">
           <label>Endereço de e-mail</label>
-          <input type="text" placeholder="Endereço de e-mail" required />
+          <input type="text" name ="email" placeholder="Endereço de e-mail" required />
         </div>
+        <div class="input-box">
+          <label>Senha</label>
+          <input type="text" name="senha" placeholder="Senha" required />
+        </div>
+      </div>
 
         <div class="column">
           <div class="input-box">
             <label>Número de telefone</label>
-            <input type="number" placeholder="Número de telefone" required />
+            <input type="number" name="telefone" placeholder="Número de telefone" required />
           </div>
           <div class="input-box">
             <label>Data de nascimento</label>
-            <input type="date" placeholder="Data de nascimento" required />
+            <input type="date" name="data_nascimento" placeholder="Data de nascimento" required />
           </div>
         </div>
 
@@ -38,17 +43,17 @@
           <h3>Gênero</h3>
           <div class="gender-option">
             <div class="gênero">
-              <input type="radio" id="check-male" name="gênero" checked />
+              <input type="radio" id="check-male" name="gênero" value="masculino" checked />
               <label for="check-male">masculino</label>
             </div>
 
             <div class="gender">
-              <input type="radio" id="check-female" name="gender" />
+              <input type="radio" id="check-female" name="gênero" value="feminino" />
               <label for="check-female">Feminino</label>
             </div>
 
             <div class="gender">
-              <input type="radio" id="check-other" name="gender" />
+              <input type="radio" id="check-other" name="gênero" value="outro" />
               <label for="check-other">prefere não dizer</label>
             </div>
           </div>
@@ -56,27 +61,33 @@
 
         <div class="input-box address">
           <label>Endereço</label>
-          <input type="text" placeholder="Digite o endereço da rua" required />
-          <input type="text" placeholder="Digite o endereço da rua" required />
+          <input type="text" name="endereco_rua" placeholder="Digite o endereço da rua" required />
+          <input type="text" name="endereco_rua2"placeholder="Digite o endereço da rua" required />
           <div class="column">
             <div class="select-box">
-              <select>
+              <select name="pais">
                 <option hidden>País</option>
                 <option>Brasil</option>
                 <option>Inglaterra</option>
                 <option>USA</option>
-                <option>Mexico</option>
+                <option>México</option>
+                <option>Argentina</option>
+                <option>Cuba</option>
+                <option>Espanha</option>
+                <option>Portugal</option>
+                <option>Austrália</option>
+                <option>Japão</option>
               </select>
             </div>
 
-            <input type="text" placeholder="Digite sua cidade" required />
+            <input type="text" name="cidade" placeholder="Digite sua cidade" required />
           </div>
           <div class="column">
-            <input type="text" placeholder="Digite sua região" required />
-            <input type="number" placeholder="Digite o CEP" required />
+            <input type="text" name="regiao" placeholder="Digite sua região" required />
+            <input type="number" name="cep" placeholder="Digite o CEP" required />
           </div>
         </div>
-        <button><a href="index.html">Enviar</a></button>
+        <button type="submit">Enviar</button>
       </form>
     </section>
   </body>
