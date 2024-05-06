@@ -1,15 +1,12 @@
-
-
 from flask import Flask, render_template, redirect, request, flash, send_from_directory
 import json
 import ast
 import os
 from pathlib import Path
-import mysql.connector
+import psycopg2
 
 caminho = Path(__file__)
 pasta_atual = caminho.parent
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'TOCHIU'
@@ -25,9 +22,9 @@ def home():
 @app.route('/adm')
 def adm():
     if logado == True:
-        conect_BD = mysql.connector.connect(host='localhost', database='usuarios',user='root', password='191069')
+        conect_BD = psycopg2.connect(host='localhost', database='usuarios',user='postgres', password='191069')
     
-        if conect_BD.is_connected():
+        if conect_BD is not None:
             print('conectado')
             cursur = conect_BD.cursor()
             cursur.execute('select * from usuario;')
@@ -43,9 +40,9 @@ def login():
     nome = request.form.get('nome')
     senha = request.form.get('senha')
 
-    conect_BD = mysql.connector.connect(host='localhost', database='usuarios',user='root', password='191069')
+    conect_BD = psycopg2.connect(host='localhost', database='usuarios',user='postgres', password='191069')
     cont = 0
-    if conect_BD.is_connected():
+    if conect_BD is not None:
         print('conectado')
         cursur = conect_BD.cursor()
         cursur.execute('select * from usuario;')
@@ -76,16 +73,14 @@ def cadastrarUsuario():
     global logado
     nome = request.form.get('nome')
     senha = request.form.get('senha')
-    conect_BD = mysql.connector.connect(host='localhost', database='usuarios',user='root', password='191069')
+    conect_BD = psycopg2.connect(host='localhost', database='usuarios',user='postgres', password='191069')
 
-    if conect_BD.is_connected():
+    if conect_BD is not None:
         cursur = conect_BD.cursor()
         cursur.execute(f"insert into usuario values (default, '{nome}', '{senha}');")
-    if conect_BD.is_connected():
+        conect_BD.commit()
         cursur.close()
         conect_BD.close()
-
-
 
     logado = True
     flash(F'{nome} CADASTRADO!!')
@@ -98,16 +93,14 @@ def excluirUsuario():
     logado = True
     nome = request.form.get('nome')
     usuarioID = request.form.get('usuarioPexcluir')
-    conect_BD = mysql.connector.connect(host='localhost', database='usuarios',user='root', password='191069')
+    conect_BD = psycopg2.connect(host='localhost', database='usuarios',user='postgres', password='191069')
 
-    if conect_BD.is_connected():
+    if conect_BD is not None:
         cursur = conect_BD.cursor()
         cursur.execute(f"delete from usuario where id='{usuarioID}'; ")
-
-    if conect_BD.is_connected():
+        conect_BD.commit()
         cursur.close()
         conect_BD.close()
-
 
     flash(F'{nome} EXCLUIDO')
     return redirect('/adm')
@@ -136,4 +129,4 @@ def download():
 
 
 if __name__ in "__main__":
-    app.run(debug=True)    
+    app.run(debug=True)
