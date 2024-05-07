@@ -32,7 +32,7 @@ cursor = conexao.cursor()
 # Crie a tabela
 cursor.execute(sql.SQL("""
     CREATE TABLE {} (
-        id SERIAL PRIMARY KEY,
+        id SERIAL PRIMARY KEY auto_increment,
         nome VARCHAR(100),
         email VARCHAR(100),
         senha VARCHAR(100),
