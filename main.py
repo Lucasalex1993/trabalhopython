@@ -1,6 +1,4 @@
 from flask import Flask, render_template, redirect, request, flash, send_from_directory
-import json
-import ast
 import os
 from pathlib import Path
 import psycopg2

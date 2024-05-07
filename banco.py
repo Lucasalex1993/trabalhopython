@@ -1,31 +1,54 @@
-
-from flask import Flask, jsonify
-from flask_cors import CORS
 import psycopg2
+from psycopg2 import sql
 
-app = Flask(__name__)
-# Ativar CORS para todas as rotas
-CORS(app)  
-
-# Configuração da conexão com o banco de dados
-conexao_banco = psycopg2.connect(
+# Conecte-se ao PostgreSQL
+conexao = psycopg2.connect(
     host="localhost",
     user="postgres",
-    password="191069",
-    database="usuarios"
+    password="191069"
 )
 
-@app.route('/api/dados', methods=['GET'])
-def obter_dados():
-    cursor = conexao_banco.cursor()
-    cursor.execute("SELECT * FROM usuario")
-    resultados = cursor.fetchall()
-    cursor.close()
+# Crie um cursor
+cursor = conexao.cursor()
 
-    # Converter os resultados em um formato que possa ser convertido em JSON
-    resultados_formatados = [dict((cursor.description[i][0], valor) for i, valor in enumerate(linha)) for linha in resultados]
+# Nome do banco de dados e da tabela
+nome_banco = "usuarios"
+nome_tabela = "usuario"
 
-    return jsonify(resultados_formatados)
+# Crie o banco de dados
+cursor.execute(sql.SQL("CREATE DATABASE {};").format(sql.Identifier(nome_banco)))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Conecte-se ao novo banco de dados
+conexao = psycopg2.connect(
+    host="localhost",
+    database=nome_banco,
+    user="postgres",
+    password="191069"
+)
+
+# Crie um novo cursor
+cursor = conexao.cursor()
+
+# Crie a tabela
+cursor.execute(sql.SQL("""
+    CREATE TABLE {} (
+        id SERIAL PRIMARY KEY,
+        nome VARCHAR(100),
+        email VARCHAR(100),
+        senha VARCHAR(100),
+        telefone VARCHAR(20),
+        data_nascimento DATE,
+        genero VARCHAR(20),
+        endereco_rua VARCHAR(100),
+        endereco_rua2 VARCHAR(100),
+        pais VARCHAR(50),
+        cidade VARCHAR(50),
+        regiao VARCHAR(50),
+        cep VARCHAR(20),
+        senha VARCHAR(100)
+    );
+""").format(sql.Identifier(nome_tabela)))
+
+# Feche o cursor e a conexão
+cursor.close()
+conexao.close()
