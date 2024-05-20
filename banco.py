@@ -32,7 +32,7 @@ cursor = conexao.cursor()
 # Crie a tabela
 cursor.execute(sql.SQL("""
     CREATE TABLE {} (
-        id SERIAL PRIMARY KEY auto_increment,
+        id SERIAL PRIMARY KEY,
         nome VARCHAR(100),
         email VARCHAR(100),
         senha VARCHAR(100),
@@ -44,8 +44,7 @@ cursor.execute(sql.SQL("""
         pais VARCHAR(50),
         cidade VARCHAR(50),
         regiao VARCHAR(50),
-        cep VARCHAR(20),
-        senha VARCHAR(100)
+        cep VARCHAR(20)
     );
 """).format(sql.Identifier(nome_tabela)))
 
