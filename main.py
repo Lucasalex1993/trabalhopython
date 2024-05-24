@@ -4,7 +4,7 @@ from modules import app, db
 def create_app():
     """Função para criar e configurar a aplicação Flask."""
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:password@localhost/nome_do_banco_de_dados'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgre:1234@localhost/meubanco'
     
     db.init_app(app)
     
